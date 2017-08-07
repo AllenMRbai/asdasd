@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta content="telephone=no,email=no" name="format-detection">
+	<meta name="browsermode" content="application"/>
+	<meta name="x5-orientation" content="portrait">
+	<meta name="x5-page-mode" content="app">
+    <link rel="stylesheet" href="css/Iscroll_main.css">
+    <link rel="stylesheet" href="css/nodisturb.css">
+	<title>推送设置</title>
+	<style>
+	.set_device_box{
+		width: 100vw;
+		height: 100vw;
+		margin-top: 6vw;
+	}
+	.set_device_box{
+		width: 100vw;
+		height: 100vw;
+		margin-top: 6vw;
+	}
+	#set_device{
+		width: 100%;
+		height: 100%;
+		/* background-color: rgba(255,255,255,.2); */
+	}
+	</style>
+</head>
+<body onload="allenbai();">
+	
+<div id="wrapper">
+    <div id="scroller">
+    	<div style="height:6vw"></div>
+		<div class="device_title">推送时间段设置</div>
+		
+		<!-- 推送时间设置器 --><!-- 估计需要createJS -->
+		<div class="set_device_box">
+			<canvas id="set_device" width="375" height="375"></canvas>
+		</div>
+		
+		<div class="prompt">注：推送时间总时间越长，奖金比率越高</div>
+		
+		<!-- 推送开关 -->
+		<div class="push_switch_box flex_col_center">
+			<div class="switch_name">推送开关&nbsp;&nbsp;<span>已开启</span></div>
+			<div class="push_switch">
+				<div class="push_btn active"><img src="img/push_btn.png" class="btn_img"></div>
+			</div>
+		</div><!-- push_switch_box -->
+
+		
+    </div><!-- scroller -->
+</div><!-- wrapper -->
+
+<div class="help_btn flex_col_center">
+	<div>猪圈圈折扣商品推送服务</div>
+	<div class="pic"><img src="img/question.png"></div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/iscroll-probe.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script src="js/easeljs-0.8.2.min.js"></script>
+<script src="js/preloadjs-0.6.2.min.js"></script>
+<script src="js/tweenjs-0.6.2.min.js"></script>
+<script src="js/setdevice.js"></script>
+<script>
+//分页加载.........................................》》》
+myScroll.on('scroll',function(){
+	help_refresh();//解决Isrcoll的refresh问题
+});
+
+
+function allenbai(){
+	var imgsrc=[
+		{id:"bo",src:"img/bo.png"},
+		{id:"dial.png",src:"img/dial.png"},
+		{id:"bo2",src:"img/bo2.png"},
+		{id:"round",src:"img/round.png"}
+	];
+	var preload=new createjs.LoadQueue(false);
+	preload.loadManifest(imgsrc);
+	preload.on('complete',handfunc)
+
+
+	function handfunc(){
+		//搭设舞台
+		var stage= new createjs.Stage("set_device");
+		//绘制图形
+		paint();
+		//整合图层顺序，并画出图形
+		function paint(){
+			layer_greenActive();
+			alpha_dial();
+			wave();
+			font("50.5")
+			createjs.Ticker.setFPS(30);
+			createjs.Ticker.addEventListener("tick",function(){
+				stage.update();
+			})
+		}
+
+		//图层1 绿色的active按钮  (注：图层index越小，越底部)
+		function layer_greenActive(){
+			var green_btn=new createjs.Container();
+			stage.addChild(green_btn);
+			var circle=new createjs.Shape();
+			circle.graphics.beginLinearGradientFill(["#4fffb7","#36caca"],[0,1],-60,-120,60,120);
+			circle.graphics.drawCircle(0,0,141);
+			circle.x=188;
+			circle.y=188;
+			//circle.cache(0,0,141);
+			//console.log(circle);
+			green_btn.addChild(circle);
+			
+		}
+
+		//仪表盘
+		function alpha_dial(){
+			var dialP=new createjs.Bitmap("img/dial.png");
+			//dialP.setBounds(0,0,200,200);
+			var bounds=dialP.getBounds();
+			var scaleNX=375/bounds.width;
+			var scaleNY=375/bounds.height;
+			dialP.scaleX=scaleNX;
+			dialP.scaleY=scaleNY;
+			dialP.cache(0,0,bounds.width,bounds.height);
+			stage.addChild(dialP);
+		}
+
+		/*
+		//波浪 版本1
+		function wave(){
+			var circle=new createjs.Shape();
+			var waveC=new createjs.Container;
+			stage.addChild(waveC);
+			circle.graphics
+				.beginFill("#000000")
+				.drawCircle(210,210,210)
+				.endFill();
+			circle.cache(-45,-45,586,586);
+			//waveC.addChild(circle)
+
+			var waveP=new createjs.Bitmap("img/bo.png");
+			var bounds=waveP.getBounds();
+			waveP.scaleX=.5;
+			waveP.scaleY=.5;
+			waveP.x=0;
+			waveP.y=120;
+			// console.log(bounds);
+			// //dialP.cache(0,0,bounds.width,bounds.height);
+			// waveP.filters=[
+			// 	new createjs.AlphaMaskFilter(circle.cacheCanvas)
+			// ];
+
+			waveP.cache(0,0,750,750);
+			console.log(waveP)
+			waveC.addChild(waveP);
+		}
+		*/
+	
+		//波浪 版本2
+		function wave(){
+			var boC=new createjs.Container();
+			stage.addChild(boC);
+
+			// //黑色的波为剪切蒙版
+			// var bo=new createjs.Bitmap("img/bo2.png");
+			// bo.scaleY=.5;
+			// bo.scaleX=.5;
+			// bo.x=0;
+			// bo.y=150;//奖金0%时，为284;奖金为100%时，为66 ----- {66 ~ 284}
+			// bo.cache(0,0,750,750);
+			
+			// var circle=new createjs.Shape();
+			// circle.graphics
+			// 	.beginLinearGradientFill(["#f1940e","#ffde00"],[0,1],188,47,188,330)
+			// 	.drawCircle(188,188,105);
+			// circle.filterss=[
+			// 	new createjs.AlphaMaskFilter(mybo.cacheCanvas)
+			// ];
+			// circle.cache(0,0,375,375);
+			// stage.addChild(circle);
+			
+			
+			//自己写波浪
+			var mybo=new createjs.Shape();
+			mybo.graphics
+				.clear()
+				.beginFill("rgba(0,0,0,.85)")
+				.moveTo(0,20)
+				// 偶数方案
+				// .quadraticCurveTo(53,0,106,20)
+				// .quadraticCurveTo(159,40,212,20)
+				// .quadraticCurveTo(265,0,318,20)
+				// .quadraticCurveTo(371,40,424,20)
+				// .quadraticCurveTo(477,0,630,20)
+				// 奇数方案
+				.quadraticCurveTo(53,0,105,20)
+				.quadraticCurveTo(158,40,210,20)
+				.quadraticCurveTo(263,0,315,20)
+				.quadraticCurveTo(368,40,420,20)
+				.quadraticCurveTo(473,0,525,20)
+				.lineTo(525,250)
+				.lineTo(0,250)
+				.lineTo(0,20)
+				.endFill();
+			mybo.x=-233;//{82...-233}
+			mybo.y=160;//{ 160....58}%0到%100
+			mybo.cache(0,0,525,250)//y{-200~40} x{0~315}
+			//boC.addChild(mybo);
+			var circle=new createjs.Bitmap("img/round.png");
+			circle.x=82;
+			circle.y=82;
+			// circle.filters=[
+			// 	new createjs.AlphaMaskFilter(mybo.cacheCanvas)
+			// ];
+			//circle.cache(0,0,375,375);
+			circle.mask=mybo;
+			//boC.addChild(mybo);
+			boC.addChild(circle);
+
+			// var allen=new createjs.Shape();
+			// allen.graphics
+			// 	.beginFill("red")
+			// 	.drawCircle(188,188,100);
+			// stage.addChild(allen);
+			
+			//console.log(circle.mask);
+			createjs.Tween.get(circle.mask,{loop:true})
+				.to({x:-23},1600)
+				.to({x:-233});		
+		}
+
+		function font(num){
+			var fontC=new createjs.Container();
+			var font1=new createjs.Text(num+"%","40px Arial","#fff");
+			console.log(font1)
+			fontC.addChild(font1);
+
+		}
+
+	}//dial.onload
+}
+
+
+
+</script>
+</body>
+</html>
