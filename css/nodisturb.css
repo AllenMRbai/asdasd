@@ -22,7 +22,7 @@
 }
 /*推送开关*/
 .push_switch_box{
-	margin-top: 6vw;
+	margin-top: 14vw;
 }
 .push_switch_box .switch_name{
 	color: #bfbecc;
@@ -65,4 +65,9 @@
 	height: 1rem;
 	margin-top: 4px;
 	margin-left: 4px;
+}
+.tips2{
+	text-align: center;
+	font-size: .6rem;
+	margin-top: 6px;
 }

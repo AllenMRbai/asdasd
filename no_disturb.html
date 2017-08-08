@@ -15,6 +15,15 @@
 		width: 100vw;
 		height: 100vw;
 		margin-top: 6vw;
+		position: relative;
+	}
+	.tips_lable{
+		position: absolute;
+		left: 7vw;
+		top:3vw;
+		width:22.4vw;
+		height: 14.666666vw;
+		transform: rotate(-15deg);
 	}
 	.set_device_box{
 		width: 100vw;
@@ -38,6 +47,7 @@
 		
 		<!-- 推送时间设置器 --><!-- 估计需要createJS -->
 		<div class="set_device_box">
+			<div class="tips_lable" style="display: none;"><img src="img/tips_lable.png"></div>
 			<canvas id="set_device" width="375" height="375"></canvas>
 		</div>
 		
@@ -45,12 +55,15 @@
 		
 		<!-- 推送开关 -->
 		<div class="push_switch_box flex_col_center">
-			<div class="switch_name">推送开关&nbsp;&nbsp;<span>已开启</span></div>
+			<div class="switch_name">推送开关&nbsp;&nbsp;<span>已关闭</span></div>
 			<div class="push_switch">
-				<div class="push_btn active"><img src="img/push_btn.png" class="btn_img"></div>
+				<div class="push_btn">
+					<img src="img/push_btn.png" class="btn_img">
+				</div>
 			</div>
 		</div><!-- push_switch_box -->
-
+		
+		<div class="tips2">关闭页面，配置信息即可生效</div>
 		
     </div><!-- scroller -->
 </div><!-- wrapper -->
@@ -58,6 +71,30 @@
 <div class="help_btn flex_col_center">
 	<div>猪圈圈折扣商品推送服务</div>
 	<div class="pic"><img src="img/question.png"></div>
+</div>
+
+<!-- 帮助 -->
+<div class="black_bg2 hidden" id="qrcode_bg"></div>
+<div class="qrcode_box hidden">
+	<div class="qrcode_flex">
+		<div class="qrcode_board ppp">
+			<div class="close_2"><img src="img/close_2.png"></div>
+			<div style="padding-top: 10px;">
+				<ul>
+					<li class="ask_li"><span class="ask">问 </span>推送服务太频繁，我该这么办？</li>
+					<li><span class="ans">答 </span>你可以通过点击时间表盘设置推送时间段，如果您对我们的推送信息不感兴趣，可以选择关闭推送开关。</li>
+				</ul>
+				<ul>
+					<li class="ask_li"><span class="ask">问 </span>什么是折扣商品推送服务？</li>
+					<li><span class="ans">答 </span>公众号每天会精选优质折扣商品信息发送到您的公众号窗口。您可以通过信息内的淘口令领取优惠券购买商品，同时还会获得一定 奖励金</li>
+				</ul>
+				<ul>
+					<li class="ask_li"><span class="ask">问 </span>怎么获得购物奖金？</li>
+					<li><span class="ans">答 </span>在公众号窗口回复对应的数字，就可以获得奖金。奖金比例越高，获得的现金红包就越大。增加推送时间，可以提高奖金比例哦！</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -73,243 +110,39 @@ myScroll.on('scroll',function(){
 	help_refresh();//解决Isrcoll的refresh问题
 });
 
-function allenbai(){
+$(".help_btn").on("click",function(){
+	kefu();
+});
 
-	var setData={
-		switch:true,
-		time:[0,1,2,3,4,5,6,7]
-	}
-	//需要预加载的图片
-	var imgsrc=[
-		{id:"dial.png",src:"img/dial.png"},
-		{id:"round",src:"img/round.png"}
-	];
-	var preload=new createjs.LoadQueue(false);
-	preload.loadManifest(imgsrc);
-	preload.on('complete',handfunc)
-
-
-	function handfunc(){
-		//搭设舞台
-		var stage= new createjs.Stage("set_device");
-		//绘制图形
-		paint();
-		//整合图层顺序，并画出图形
-		function paint(){
-			layer_greenActive();
-			var test=getHitArea(0);
-			stage.addChild(test);
-			alpha_dial();
-			wave();
-			font("50.5")
-			preventClickRound()
-			
-
-			createjs.Ticker.setFPS(30);
-			createjs.Ticker.addEventListener("tick",function(){
-				stage.update();
-			})
-		}
-		//获得扇形按钮的蒙蔽，和点击区域
-		function getHitArea(num){
-			var rotateAngle=num*45;
-			var bigRector=new createjs.Shape();
-			bigRector.graphics
-				.clear()
-				.beginFill("#000000")
-				.moveTo(0,0)
-				.lineTo(0,-47)
-				.arc(0,0,141,Math.PI*3/2,Math.PI*7/4,false)
-				.lineTo(0,0)
-				.endFill();
-			bigRector.x=188;
-			bigRector.y=188;
-			bigRector.rotation=rotateAngle;
-
-			//记录设置开关数据
-			bigRector.allen={};
-			bigRector.allen.on=false;//是否开启该时间段
-			bigRector.allen.num=num;//设置该时间段
-
-			//绑定点击事件
-			bigRector.addEventListener("click",function(){
-				alert("0");
-			});
-			return bigRector;
-		}
-
-		//图层1 绿色的active按钮  (注：图层index越小，越底部)
-		function layer_greenActive(){
-			var green_btn=new createjs.Container();
-			stage.addChild(green_btn);
-			var circle=new createjs.Shape();
-			circle.graphics.beginLinearGradientFill(["#4fffb7","#36caca"],[0,1],-60,-120,60,120);
-			circle.graphics.drawCircle(0,0,141);
-			circle.x=188;
-			circle.y=188;
-			//circle.cache(0,0,141);
-			//console.log(circle);
-			green_btn.addChild(circle);
-			
-		}
-
-		//仪表盘
-		function alpha_dial(){
-			var dialP=new createjs.Bitmap("img/dial.png");
-			//dialP.setBounds(0,0,200,200);
-			var bounds=dialP.getBounds();
-			var scaleNX=375/bounds.width;
-			var scaleNY=375/bounds.height;
-			dialP.scaleX=scaleNX;
-			dialP.scaleY=scaleNY;
-			dialP.cache(0,0,bounds.width,bounds.height);
-			stage.addChild(dialP);
-		}
-
-		/*
-		//波浪 版本1
-		function wave(){
-			var circle=new createjs.Shape();
-			var waveC=new createjs.Container;
-			stage.addChild(waveC);
-			circle.graphics
-				.beginFill("#000000")
-				.drawCircle(210,210,210)
-				.endFill();
-			circle.cache(-45,-45,586,586);
-			//waveC.addChild(circle)
-
-			var waveP=new createjs.Bitmap("img/bo.png");
-			var bounds=waveP.getBounds();
-			waveP.scaleX=.5;
-			waveP.scaleY=.5;
-			waveP.x=0;
-			waveP.y=120;
-			// console.log(bounds);
-			// //dialP.cache(0,0,bounds.width,bounds.height);
-			// waveP.filters=[
-			// 	new createjs.AlphaMaskFilter(circle.cacheCanvas)
-			// ];
-
-			waveP.cache(0,0,750,750);
-			console.log(waveP)
-			waveC.addChild(waveP);
-		}
-		*/
-	
-		//波浪 版本2
-		function wave(){
-			var boC=new createjs.Container();
-			stage.addChild(boC);
-
-			// //黑色的波为剪切蒙版
-			// var bo=new createjs.Bitmap("img/bo2.png");
-			// bo.scaleY=.5;
-			// bo.scaleX=.5;
-			// bo.x=0;
-			// bo.y=150;//奖金0%时，为284;奖金为100%时，为66 ----- {66 ~ 284}
-			// bo.cache(0,0,750,750);
-			
-			// var circle=new createjs.Shape();
-			// circle.graphics
-			// 	.beginLinearGradientFill(["#f1940e","#ffde00"],[0,1],188,47,188,330)
-			// 	.drawCircle(188,188,105);
-			// circle.filterss=[
-			// 	new createjs.AlphaMaskFilter(mybo.cacheCanvas)
-			// ];
-			// circle.cache(0,0,375,375);
-			// stage.addChild(circle);
-			
-			
-			//自己写波浪
-			var mybo=new createjs.Shape();
-			mybo.graphics
-				.clear()
-				.beginFill("rgba(0,0,0,.85)")
-				.moveTo(0,20)
-				// 偶数方案
-				// .quadraticCurveTo(53,0,106,20)
-				// .quadraticCurveTo(159,40,212,20)
-				// .quadraticCurveTo(265,0,318,20)
-				// .quadraticCurveTo(371,40,424,20)
-				// .quadraticCurveTo(477,0,630,20)
-				// 奇数方案
-				.quadraticCurveTo(53,0,105,20)
-				.quadraticCurveTo(158,40,210,20)
-				.quadraticCurveTo(263,0,315,20)
-				.quadraticCurveTo(368,40,420,20)
-				.quadraticCurveTo(473,0,525,20)
-				.lineTo(525,250)
-				.lineTo(0,250)
-				.lineTo(0,20)
-				.endFill();
-			mybo.x=-233;//{82...-233}
-			mybo.y=160;//{ 160....58}%0到%100
-			mybo.cache(0,0,525,250)//y{-200~40} x{0~315}
-			//boC.addChild(mybo);
-			var circle=new createjs.Bitmap("img/round.png");
-			circle.x=82;
-			circle.y=82;
-			// circle.filters=[
-			// 	new createjs.AlphaMaskFilter(mybo.cacheCanvas)
-			// ];
-			//circle.cache(0,0,375,375);
-			circle.mask=mybo;
-			//boC.addChild(mybo);
-			boC.addChild(circle);
-
-			// var allen=new createjs.Shape();
-			// allen.graphics
-			// 	.beginFill("red")
-			// 	.drawCircle(188,188,100);
-			// stage.addChild(allen);
-			
-			//console.log(circle.mask);
-			createjs.Tween.get(circle.mask,{loop:true})
-				.to({x:-23},1400)
-				.to({x:-233});		
-		}
-
-		function font(num){
-			var fontC=new createjs.Container();
-			stage.addChild(fontC);
-			var font1=new createjs.Text(num+"%","bold 44px Arial","#ffffff");
-			var bounds1=font1.getBounds();
-			font1.x=188-parseInt(bounds1.width/2);
-			font1.y=160;
-			font1.shadow=new createjs.Shadow("rgba(48, 40, 113, 0.71)",0,2,0);
-			console.log(font1)
-			fontC.addChild(font1);
-
-			var font2=new createjs.Text("奖金比例","20px Arial","#ffffff")
-			var bounds2=font2.getBounds();
-			font2.x=188-parseInt(bounds2.width/2);
-			font2.y=220;
-			fontC.addChild(font2);
-
-		}
-
-		//该圆是为了让点击表盘的点击面积减去该圆的面积
-		function preventClickRound(){
-			var round=new createjs.Shape();
-			round.graphics
-				.beginFill("rgba(255,255,255,.01)")
-				.drawCircle(0,0,105);
-
-			round.x=188;
-			round.y=188;
-			round.addEventListener("click",function(){
-				//防止点击表盘中间部件，会触发旁边的设置按钮事件
-			})
-
-			stage.addChild(round);
-		}
-
-	}//dial.onload
+//获得推送配置的ajax
+function getSet(){
+    $.ajax({
+        type: "get",
+        url: "",//小施请在这里写下地址
+        success:function(data){
+        	allenbai(data.masterSwitch,times.timeSlot)
+        }
+    });
 }
-
-
-
+/*
+//这里的data大概是这个样子
+{
+   masterSwitch:true,//true表示打开推送开关
+   timeSlot:{
+        0:false,//0表示0点到凌晨3点的时间段，false表示关闭该时间段的推送
+        1:false,//1表示3点到凌晨6点的时间段，false表示关闭该时间段的推送
+        2:false,//2表示6点到9点的时间段，false表示关闭该时间段的推送
+        3:true,//3表示9点到12点的时间段，true表示开启该时间段的推送  ....以下配置，以此类推
+        4:true,
+        5:true,
+        6:true,
+        7:false
+   }
+}
+*/
+$(".set_device_box").click(function(){
+	$(".tips_lable").hide();
+})
 </script>
 </body>
 </html>
