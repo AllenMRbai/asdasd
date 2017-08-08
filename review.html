@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta content="telephone=no,email=no" name="format-detection">
+	<meta name="browsermode" content="application"/>
+	<meta name="x5-orientation" content="portrait">
+	<meta name="x5-page-mode" content="app">
+    <link rel="stylesheet" href="css/Iscroll_main.css">
+	<title>商品回看</title>
+	<style>
+	#wrapper{
+		background-color: #f5f5f5;
+	}
+	#scroller{
+		background-color: #f5f5f5;
+	}
+	.banner{
+		width: 100%;
+		margin-bottom: 10px;
+	}
+	.prolist_box{
+		width: 100%;
+	}
+	.prolist{
+		width: 95vw;
+		height: 30vw;
+		border-radius: 6px;
+		box-shadow: -0.717px 1.867px 5px 0px rgba(32, 32, 32, 0.1);
+		flex:1;
+		background-color: #fff;
+		margin:0 auto;
+		margin-bottom: 10px;
+		overflow: hidden;
+		padding: 1vw;
+	}
+	.prolist .pro_pic{
+		width: 28vw;
+		height: 28vw;
+		background-color: #e0e0e0;
+	}
+	.prolist .pro_right.flex_col_betwen{
+		padding-left: 1vw;
+		flex:1;
+		height: 28vw;
+		flex-direction: column;
+	}
+	.prolist .pro_name{
+		color: #424242;
+		font-size: 14px;
+		line-height: 17px;
+		height: 34px;
+		overflow: hidden;
+	}
+	.prolist .sale_volume{
+		color: #808080;
+		font-size: 12px;
+	}
+	.prolist .pro_b{
+		width: 100%;
+	}
+	.prolist .price{
+		font-size: 12px;
+		color: #808080;
+	}
+	.prolist .price span{
+		font-size: 16px;
+		color: #f43655;
+	}
+	.prolist .quan_label{
+		border-radius: 2px;
+		border:1px solid #e31436;
+	}
+	.prolist .quan_num{
+		
+	}
+	.prolist .quan_red{
+		
+	}
+	</style>
+</head>
+<body>
+	
+<div id="wrapper">
+    <div id="scroller">
+    	<!-- banner -->
+    	<div class="banner">
+			<img src="img/viewBanner.jpg">
+    	</div>
+		
+		<!-- 列表式产品 -->
+		<div class="prolist_box">
+
+			<div class="prolist flex_col_betwen">
+				<div class="pro_pic"><img src="img/product.jpeg"></div>
+				<div class="pro_right flex_col_betwen">
+					<div>
+						<div class="pro_name">似懂非懂夏装新款笑脸印花女班抓苏丹红放空间啊是发健康会发觉好啊打发阿达发生地方阿水啊打发啊打发阿斯蒂 </div>
+						<div class="sale_volume">销量&nbsp;&nbsp;<span>356</span></div>	
+					</div>
+					<div class="pro_b flex_col_betwen">
+						<div class="price">券后<span>￥</span><span>60.50</span></div>
+						<div class="quan_label flex_col_end">
+							<div class="quan_num">￥<span>20</span></div>
+							<div class="quan_red">立即抢券</div>
+						</div>
+					</div>
+				</div><!-- pro_right -->
+
+			</div><!-- prolist -->
+
+
+
+		</div><!-- prolist_box -->
+
+
+
+    </div><!-- scroller -->
+</div><!-- wrapper -->
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/iscroll-probe.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script>
+//分页加载.........................................》》》
+myScroll.on('scroll',function(){
+	help_refresh();//解决Isrcoll的refresh问题
+});
+
+</script>
+</body>
+</html>
