@@ -8,76 +8,10 @@
 	<meta name="x5-orientation" content="portrait">
 	<meta name="x5-page-mode" content="app">
     <link rel="stylesheet" href="css/Iscroll_main.css">
+    <link rel="stylesheet" href="css/review.css">
 	<title>商品回看</title>
 	<style>
-	#wrapper{
-		background-color: #f5f5f5;
-	}
-	#scroller{
-		background-color: #f5f5f5;
-	}
-	.banner{
-		width: 100%;
-		margin-bottom: 10px;
-	}
-	.prolist_box{
-		width: 100%;
-	}
-	.prolist{
-		width: 95vw;
-		height: 30vw;
-		border-radius: 6px;
-		box-shadow: -0.717px 1.867px 5px 0px rgba(32, 32, 32, 0.1);
-		flex:1;
-		background-color: #fff;
-		margin:0 auto;
-		margin-bottom: 10px;
-		overflow: hidden;
-		padding: 1vw;
-	}
-	.prolist .pro_pic{
-		width: 28vw;
-		height: 28vw;
-		background-color: #e0e0e0;
-	}
-	.prolist .pro_right.flex_col_betwen{
-		padding-left: 1vw;
-		flex:1;
-		height: 28vw;
-		flex-direction: column;
-	}
-	.prolist .pro_name{
-		color: #424242;
-		font-size: 14px;
-		line-height: 17px;
-		height: 34px;
-		overflow: hidden;
-	}
-	.prolist .sale_volume{
-		color: #808080;
-		font-size: 12px;
-	}
-	.prolist .pro_b{
-		width: 100%;
-	}
-	.prolist .price{
-		font-size: 12px;
-		color: #808080;
-	}
-	.prolist .price span{
-		font-size: 16px;
-		color: #f43655;
-	}
-	.prolist .quan_label{
-		border-radius: 2px;
-		border:1px solid #e31436;
-	}
-	.prolist .quan_num{
-		
-	}
-	.prolist .quan_red{
-		
-	}
+	
 	</style>
 </head>
 <body>
@@ -90,10 +24,12 @@
     	</div>
 		
 		<!-- 列表式产品 -->
-		<div class="prolist_box">
+		<!-- <div class="prolist_box">
 
-			<div class="prolist flex_col_betwen">
-				<div class="pro_pic"><img src="img/product.jpeg"></div>
+			<div class="prolist flex_col_betwen" data-pro="123456" data-tkl="">
+				<div class="pro_pic">
+					<img class="lazy" src="img/face.svg" data-original="img/product.jpeg" data-loaded='false'>
+				</div>
 				<div class="pro_right flex_col_betwen">
 					<div>
 						<div class="pro_name">似懂非懂夏装新款笑脸印花女班抓苏丹红放空间啊是发健康会发觉好啊打发阿达发生地方阿水啊打发啊打发阿斯蒂 </div>
@@ -106,26 +42,234 @@
 							<div class="quan_red">立即抢券</div>
 						</div>
 					</div>
-				</div><!-- pro_right -->
+				</div>
+			
+			</div>
+			
+		</div> -->
+		
 
-			</div><!-- prolist -->
+		<!-- 直播间式产品 -->
+		<div class="product_box">
 
+			<!-- <div class="pro_unit">
+				<div class="time flex_col_center m_top"><span>19:20</span></div>
+				<div class="flex_col_start align_start m_top ">
+					<div class="manager"><img src="img/header.jpg"></div>
+					<div class="pro_pic">
+						<img class="lazy product_picture" src="img/face.svg" data-original="img/product.jpeg" data-loaded='false'>
+					</div>
+				</div>
+				<div class="flex_col_start align_start m_top with_chat">
+					<div class="manager"><img src="img/header.jpg"></div>
+					<div class="chat_bubble">
+						<img src="img/bublle_left.png" class="bubble_left">
+						<div class="pro_det">
+							<div class="pro_why" style="margin-top: .4rem;">安静可获得价款的后发觉安静肯定会加厚的家伙就卡的很，回到家后手机号是减肥后是健康烦得很</div>
+							<div class="pink_btn" data-tkl="this is tao kou ling">点击购买</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</div> -->
+		</div><!-- product_box -->
 
-
-		</div><!-- prolist_box -->
-
+		<div class="add_animate"><!-- 加载动画 -->
+			<div class="load_animation" >
+			</div>
+		</div>
 
 
     </div><!-- scroller -->
 </div><!-- wrapper -->
+
+<!-- 淘口令面板 -->
+<div class="black_bg2 hidden" id="qrcode_bg"></div>
+<div class="qrcode_box hidden">
+	<div class="qrcode_flex">
+		<div class="qrcode_board ppp" style="width: 74vw">
+			<div class="close_2"><img src="img/close_2.png"></div>
+			<div style="padding-top: 2px;">
+				<div class="pic-father">
+					<div class="round_pic">
+						<img src="img/product.jpeg">
+					</div>
+				</div>
+					<div class="tkl_title">淘口令</div>
+				<div class="text_box" id="android_event"><!-- 安卓 -->
+					<textarea class="taocl" id="asdasd">正在加载淘口令</textarea>
+					<button class="taokaocopy copy_btn" data-clipboard-action="copy" data-clipboard-target="#asdasd">复制文本</button>
+				</div>
+				<div class="tex_box" id="ios_event"><!-- IOS -->
+					<div class="taocl" id="tip2_content">￥ 12sfss12154 ￥</div>
+					<textarea class="taocl tao_kl_zx" style="display: none;">￥ 12sfss12154 ￥</textarea>
+					<button class="taokaocopy1 copy_btn" style="display: none;" data-clipboard-action="copy" data-clipboard-target="#tip2_content">复制文本</button>
+				</div>
+				
+				<div class="tips_box">
+					<div class="tips_title">使用说明</div>
+					<div class="tips_content">复制口令后打开【手机淘宝】即可领取优惠券购买！</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/iscroll-probe.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/lazyloadfor_Iscroll.js"></script>
+<script type="text/javascript" src="js/clipboard.min.js"></script>
 <script>
+$("img.lazy").lazyload();//懒加载
 //分页加载.........................................》》》
 myScroll.on('scroll',function(){
 	help_refresh();//解决Isrcoll的refresh问题
+	var html="<div class='spinner'><div class='rect1'></div><div class='rect2'></div><div class='rect3'></div><div class='rect4'></div><div class='rect5'></div></div>";
+	if ((this.y < myScroll.maxScrollY) && (!$(".spinner").length) && ($(".load_animation").has(".no_more").length<1)) {//判断是否到达底部 && 加载动画是否还在
+        $(".load_animation").append(html); //到达底部 apend加载动画
+        pageIndex++;
+        GetGoods(pageIndex);
+	}
 });
+
+//向后台请求商品条目的ajax
+var pageIndex = 1;
+function GetGoods(pageIndex) {
+    $.ajax({
+        type: "post",
+        url: "",//重写下请求地址
+        data: { pageIndex: pageIndex },
+        success: function (data) {
+            var html = '';
+            for (var i = 0; i < data.DataList.length; i++) {
+                html +=""; //重写下这个模板
+            }
+            $('.product_box').append(html);
+
+            $("img.lazy").lazyload();
+            setTimeout(function () {
+                remove_ani(data.DataList.length);
+            }, 500);
+        }
+    });
+}
+//点击某个产品时弹出淘口令
+$(document).on("click",".pink_btn",function(){
+	initPanel(this);//初始化淘口令面板并给图片附上对应的地址链接
+	kefu();//弹出淘口令面板
+	$("textarea").autoHeight();
+})
+//初始化淘口令面板，并给图片附上对应的地址链接
+function initPanel(pro){
+	var pic=$(pro).parents(".pro_unit").find(".product_picture").attr("data-original");
+	var tkl=$(pro).attr("data-tkl");
+	console.log(tkl);
+	$(".taocl").text(tkl);
+	$(".round_pic img").attr("src",pic)
+	$(".taokaocopy1").html("复制文本");
+    $(".taokaocopy1").css("background-color", "#ff3c00");
+}
+
+
+
+/*`<div class="text_box" id="android_event"><!-- 安卓 -->
+	<textarea class="taocl" id="asdasd">正在加载淘口令</textarea>
+	<button class="taokaocopy copy_btn" data-clipboard-action="copy" data-clipboard-target="#asdasd">复制文本</button>
+</div>
+<div class="tex_box" id="ios_event"><!-- IOS -->
+	<div class="taocl" id="tip2_content">￥ 12sfss12154 ￥</div>
+	<textarea class="taocl tao_kl_zx" style="display: none;">￥ 12sfss12154 ￥</textarea>
+	<button class="taokaocopy1 copy_btn" style="display: none;" data-clipboard-action="copy" data-clipboard-target="#tip2_content">复制文本</button>
+</div>`*/
+//点击某个产品时弹出淘口令............................
+//复制按钮
+(function(){
+	var ua = navigator.userAgent.toLowerCase();
+	if (ua.match(/iphone/i) == "iphone" || ua.match(/ipad/i) == "ipad") {
+        $('#ios_event').show();
+        $('#android_event').hide();
+        if (ua.match(/iphone os 10/i) == "iphone os 10") {
+            $('#tip2_content').hide();
+            $('.taokaocopy1').show();
+            $('.tao_kl_zx').show();
+
+            var clipboard = new Clipboard(".taokaocopy1", {
+                text: function () {
+                    return $(".tao_kl_zx").val();
+                }
+            });
+
+            clipboard.on('success', function (e) {
+                //alert("链接已复制到剪贴板");
+                $(".taokaocopy1").html("已复制");
+                $(".taokaocopy1").css("background-color", "#66ce00");
+            });
+            clipboard.on('error', function (e) {
+                //console.log(e);
+                $(".taokaocopy1").html("请手动复制");
+                $(".taokaocopy1").css("background-color", "grey");
+            });
+        }
+
+    } else {
+        $('#ios_event').hide();
+        $('#android_event').show();
+        $("textarea").autoHeight();
+        $('#android_event').click(function () {
+            $(this).find(".taocl").blur();
+        });
+
+        var clipboard = new Clipboard(".taokaocopy", {
+	        text: function() {
+	            return $(".asdasd").val();//$("#asdasd").val();
+	        }
+	    });
+	    console.log(clipboard);
+        clipboard.on('success', function (e) {
+            //alert("链接已复制到剪贴板");
+            $(".taokaocopy").html("已复制");
+            $(".taokaocopy").css("background-color", "#66ce00");
+        });
+        clipboard.on('error', function (e) {
+            //console.log(e);
+            $(".taokaocopy").html("请手动复制");
+            $(".taokaocopy").css("background-color", "grey");
+        });
+    }
+}());
+
+
+//一下为前端模拟，删掉即可
+function renderProduct(){
+	var ran=Math.round(Math.random()*20)+5;
+	var html="";
+	for(var i=0;i<ran;i++){
+		html+=`<div class="pro_unit">
+				<div class="time flex_col_center m_top"><span>19:20</span></div>
+				<div class="flex_col_start align_start m_top ">
+					<div class="manager"><img src="img/header.jpg"></div>
+					<div class="pro_pic">
+						<img class="lazy product_picture" src="img/face.svg" data-original="img/product.jpeg" data-loaded='false'>
+					</div>
+				</div>
+				<div class="flex_col_start align_start m_top with_chat">
+					<div class="manager"><img src="img/header.jpg"></div>
+					<div class="chat_bubble">
+						<img src="img/bublle_left.png" class="bubble_left">
+						<div class="pro_det">
+							<div class="pro_why" style="margin-top: .4rem;">安静可获得价款的后发觉安静肯定会加厚的家伙就卡的很，回到家后手机号是减肥后是健康烦得很</div>
+							<div class="pink_btn" data-tkl="this is tao kou ling">点击购买</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</div>`
+	}
+	$(".product_box").html(html);
+}
+renderProduct();
+
 
 </script>
 </body>

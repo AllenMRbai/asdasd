@@ -244,10 +244,10 @@ function close_qrcode(){
     $(".qrcode_box").addClass("hidden");
     $(".qrcode_box").css({"transform":"scale(0.4)","opacity":"0"});
 }
-$(".qrcode_box").click(close_qrcode);
-$(".qrcode_board").click(function(e){
-    e.stopPropagation();
-});
+// $(".qrcode_box").click(close_qrcode);
+// $(".qrcode_board").click(function(e){
+//     e.stopPropagation();
+// });
 $(".qrcode_board .close_2").click(close_qrcode);
 //星星 月亮 太阳等级显示
 function levelPic(level){

@@ -1,0 +1,181 @@
+#wrapper{
+	background-color: #f5f5f5;
+}
+#scroller{
+	background-color: #f5f5f5;
+}
+.banner{
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+/*产品列表*/
+.prolist_box{
+	width: 100%;
+}
+.prolist{
+	width: 95vw;
+	height: 30vw;
+	border-radius: 6px;
+	box-shadow: -0.717px 1.867px 5px 0px rgba(32, 32, 32, 0.1);
+	flex:1;
+	background-color: #fff;
+	margin:0 auto;
+	margin-bottom: 10px;
+	overflow: hidden;
+	padding: 1vw;
+}
+.prolist .pro_pic{
+	width: 28vw;
+	height: 28vw;
+	background-color: #e0e0e0;
+}
+.prolist .pro_right.flex_col_betwen{
+	padding-left: 1vw;
+	flex:1;
+	height: 28vw;
+	flex-direction: column;
+	overflow: hidden;
+}
+.prolist .pro_name{
+	color: #424242;
+	font-size: 14px;
+	line-height: 17px;
+	height: 34px;
+	overflow: hidden;
+}
+.prolist .sale_volume{
+	color: #808080;
+	font-size: 12px;
+}
+.prolist .pro_b{
+	width: 100%;
+}
+.prolist .price{
+	font-size: 12px;
+	color: #808080;
+}
+.prolist .price span{
+	font-size: 16px;
+	color: #f43655;
+}
+.prolist .quan_label{
+	border-radius: 2px;
+	border:1px solid #e31436;
+	overflow: hidden;
+}
+.prolist .quan_num{
+	padding: 4px;
+	font-size: 12px;
+}
+.prolist .quan_red{
+    background-image: -webkit-linear-gradient(329deg, rgb(227,20,54) 0%, rgb(247,59,90) 100%);
+    background-image: -o-linear-gradient(329deg, rgb(227,20,54) 0%, rgb(247,59,90) 100%);
+    background-image: linear-gradient(59deg, rgb(227,20,54) 0%, rgb(247,59,90) 100%);
+    color:#fff;
+    padding:4px;
+    font-size: 12px;
+}
+/*产品列表 直播版*/
+.align_start{align-items: flex-start;}
+.m_top{margin-top: 1rem;}
+.pro_unit{padding:0 0.5rem;}
+.with_chat{flex:1;}
+.pro_unit .time span{font-size: 0.5rem;color: #fff;background-color:rgba(0,0,0,.1);border-radius: 2px;padding:2px 8px;}
+.pro_unit .manager{width:2.1rem;height: 2.1rem;margin-right:0.6rem;box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.09);}
+.pro_unit .pro_pic{width: 6.5rem;height:6.5rem;box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.09);}
+.chat_bubble{background-color: #fff;border-radius: 6px;flex:1;color:#424242;position: relative;box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.09);}
+.chat_bubble .bubble_left{position: absolute;width:0.8rem;height:1.5rem;top:0.2rem;left: -0.35rem;z-index: 10; }
+.chat_bubble .pro_name{font-size:.75rem;line-height:20px;font-weight: bold;margin-bottom:.4rem;padding: 10px 10px 0 10px;}
+.chat_bubble .pro_why{font-size:.75rem;color:#727272;line-height:20px;margin-bottom:0.4rem;padding: 0 10px;  }
+.chat_bubble .c_box{padding: 0 10px;margin-bottom: .1rem;}
+.chat_bubble .c_box2{padding:10px;background-color:#fafafa;border-radius: 0 0 6px 6px; }
+.chat_bubble .coupon{font-size: .75rem;color: #f89a12;}
+.chat_bubble .pro_price{font-size:.75rem;color:#ef3870;}
+.chat_bubble .free_shipping{font-size:.75rem;color:#ef3870;border:1px solid #ef3870;padding: 3px;margin-left: 5px;border-radius: 2px;}
+.chat_bubble .shop_car{width:1rem;height: 1rem;margin-right: 3px;}
+.chat_bubble .buy_it{font-size: .7rem;color:#999; }
+.chat_bubble .pro_num{font-size: .8rem;color: #40bd72;}
+.product_box .pink_btn{
+		font-size: 14px;
+		width: 26vw;
+		line-height: 35px;
+		line-height: 35px;
+		color: #fff;
+		border-radius: 4px;
+		text-align: center;
+		margin-bottom: .4rem;
+		margin-right: 10px;
+		float: right;
+	    background-image: -webkit-linear-gradient(59deg, rgb(227,20,54) 0%, rgb(247,59,90) 100%);
+	    background-image: -o-linear-gradient(59deg, rgb(227,20,54) 0%, rgb(247,59,90) 100%);
+	    background-image: linear-gradient(149deg, rgb(227,20,54) 0%, rgb(247,59,90) 100%);
+}
+/*淘口令窗口*/
+.qrcode_box  .pic-father{
+	width: 1px;
+	height: 1px;
+	margin:0 auto;
+	position: relative;
+}
+.qrcode_box .round_pic{
+	width: 28vw;
+	height: 28vw;
+	border-radius: 2px;
+	overflow: hidden;
+	position: absolute;
+	left: -14vw;
+	top: -35vw;
+	border:1px solid #fff;
+}
+.qrcode_box .taocl{
+	background-color: #e6e6e6;
+	text-align: center;
+	width: 50vw;
+	margin:0 auto;
+	display: block;
+	font-size: 15px;
+	line-height: 20px;
+	padding: 7px 0;
+	background-color: #fff;
+	border:dashed 2px #ff3c00;
+}
+.qrcode_box textarea.taocl{
+	font-size: 15px;
+	line-height: 15px;
+}
+
+.qrcode_box .tkl_title{
+	text-align: center;
+	color: #ff3c00;
+	font-size: .75rem;
+	padding: 2px 0;
+}
+
+.qrcode_box .copy_btn{
+	background-color: #ff3c00;
+	font-size: 15px;
+	line-height: 38px;
+	height: 38px;
+	border-radius: 19px;
+	width: 30vw;
+	margin:0 auto;
+	color: #fff;
+	text-align: center;
+	margin-top:18px;
+}
+.qrcode_box .tips_box{
+	background-color:#f0f0f0;
+	width: 100%;
+	border-radius: 4px; 
+	margin-top: 20px;
+	padding: 6px;
+}
+.qrcode_box .tips_title{
+	text-align: center;
+	color: #767b91;
+	margin-bottom: 2px;
+}
+.qrcode_box  .tips_content{
+	color: #8a7e7e;
+}
