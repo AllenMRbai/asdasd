@@ -61,11 +61,11 @@ function allenbai(swi,times){
             var pushBtn=$(".push_switch .push_btn");//开关按钮容器 position:relative
             var btnImg=$(".push_switch .btn_img");//开关按钮（按钮图片）position:absolute;top:-3px;关闭在左边left:0;开启在右边left:30px;
             var tipsLabl=$(".tips_lable");
-            /*if(masterSwitch){//这里暂时注释掉了，到时候记得改回来
+            if(masterSwitch){//这里暂时注释掉了，到时候记得改回来
                 tipsLabl.show();
             }else{
                 tipsLabl.hide();
-            }*/
+            }
 
             //渲染开和关的各种状态
             function renderState(){
@@ -346,6 +346,9 @@ function allenbai(swi,times){
                 //阻止用户点击
             })
             return round;
+        }
+        function redpaper(){
+            
         }
 
     }//dial.onload

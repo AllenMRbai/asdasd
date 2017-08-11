@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="css/review.css">
 	<title>商品回看</title>
 	<style>
-	
+		#scroller{
+			-webkit-tap-highlight-color:rgba(255,255,255,0);
+		}
 	</style>
 </head>
 <body>
@@ -155,7 +157,7 @@ function GetGoods(pageIndex) {
     });
 }
 //点击某个产品时弹出淘口令
-$(document).on("click",".pink_btn",function(){
+$("#scroller").on("click",".pink_btn",function(e){
 	initPanel(this);//初始化淘口令面板并给图片附上对应的地址链接
 	kefu();//弹出淘口令面板
 	$("textarea").autoHeight();
