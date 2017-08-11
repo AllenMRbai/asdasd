@@ -61,11 +61,11 @@ function allenbai(swi,times){
             var pushBtn=$(".push_switch .push_btn");//开关按钮容器 position:relative
             var btnImg=$(".push_switch .btn_img");//开关按钮（按钮图片）position:absolute;top:-3px;关闭在左边left:0;开启在右边left:30px;
             var tipsLabl=$(".tips_lable");
-            if(masterSwitch){
+            /*if(masterSwitch){//这里暂时注释掉了，到时候记得改回来
                 tipsLabl.show();
             }else{
                 tipsLabl.hide();
-            }
+            }*/
 
             //渲染开和关的各种状态
             function renderState(){
@@ -101,8 +101,8 @@ function allenbai(swi,times){
                 .clear()
                 .beginFill("rgba(47,47,56,1)")
                 .moveTo(0,0)
-                .lineTo(0,-47)
-                .arc(0,0,141,Math.PI*3/2,Math.PI*7/4,false)
+                .lineTo(0,-283)
+                .arc(0,0,283,Math.PI*3/2,Math.PI*7/4,false)
                 .lineTo(0,0)
                 .endFill();
             if(timeSlot[num]){
@@ -111,8 +111,8 @@ function allenbai(swi,times){
                 bigRector.alpha=1
             }
 
-            bigRector.x=188;
-            bigRector.y=188;
+            bigRector.x=376;
+            bigRector.y=376;
             bigRector.rotation=rotateAngle;
 
             //绑定点击事件
@@ -136,9 +136,9 @@ function allenbai(swi,times){
             stage.addChild(green_btn);
             var circle=new createjs.Shape();
             circle.graphics.beginLinearGradientFill(["#4fffb7","#36caca"],[0,1],-60,-120,60,120);
-            circle.graphics.drawCircle(0,0,141);
-            circle.x=188;
-            circle.y=188;
+            circle.graphics.drawCircle(0,0,282);
+            circle.x=376;
+            circle.y=376;
             //circle.cache(0,0,141);
             //console.log(circle);
             //
@@ -161,8 +161,8 @@ function allenbai(swi,times){
             var dialP=new createjs.Bitmap("img/dial.png");
             //dialP.setBounds(0,0,200,200);
             var bounds=dialP.getBounds();
-            var scaleNX=375/bounds.width;
-            var scaleNY=375/bounds.height;
+            var scaleNX=750/bounds.width;
+            var scaleNY=750/bounds.height;
             dialP.scaleX=scaleNX;
             dialP.scaleY=scaleNY;
             dialP.cache(0,0,bounds.width,bounds.height);
@@ -205,13 +205,13 @@ function allenbai(swi,times){
             var numTimes=moneyRate[1];
 
             //修改波的高度
-            var boY=282-parseInt(numTimes*240/8);
+            var boY=580-parseInt(numTimes*480/8);
             waveBo.y=boY;
 
             //修改“奖金比例”的数字
             fontRate.text=numTimes*12.5+"%";
             var bounds=fontRate.getBounds();
-            fontRate.x=188-parseInt(bounds.width/2);
+            fontRate.x=376-parseInt(bounds.width/2);
         }
         //计算奖金百分比
         function calculateRate(){
@@ -262,22 +262,22 @@ function allenbai(swi,times){
                 // .quadraticCurveTo(371,40,424,20)
                 // .quadraticCurveTo(477,0,630,20)
                 // 奇数方案
-                .quadraticCurveTo(53,0,105,20)
-                .quadraticCurveTo(158,40,210,20)
-                .quadraticCurveTo(263,0,315,20)
-                .quadraticCurveTo(368,40,420,20)
-                .quadraticCurveTo(473,0,525,20)
-                .lineTo(525,250)
-                .lineTo(0,250)
+                .quadraticCurveTo(56,-10,210,20)
+                .quadraticCurveTo(316,50,420,20)
+                .quadraticCurveTo(526,-10,630,20)
+                .quadraticCurveTo(736,50,840,20)
+                .quadraticCurveTo(946,-10,1050,20)
+                .lineTo(1050,500)
+                .lineTo(0,500)
                 .lineTo(0,20)
                 .endFill();
-            mybo.x=-233;//{82...-233}
-            mybo.y=160;//{ 282....42}%0到%100
-            mybo.cache(0,0,525,250)//y{-200~40} x{0~315}
+            mybo.x=-450;//{164...-450}
+            mybo.y=400;//{ 564....84}%0到%100
+            mybo.cache(0,0,1050,500)//y{-200~40} x{0~315}
             //boC.addChild(mybo);
             var circle=new createjs.Bitmap("img/round.png");
-            circle.x=82;
-            circle.y=82;
+            circle.x=165;
+            circle.y=165;
             // circle.filters=[
             //  new createjs.AlphaMaskFilter(mybo.cacheCanvas)
             // ];
@@ -294,8 +294,8 @@ function allenbai(swi,times){
             
             //console.log(circle.mask);
             createjs.Tween.get(circle.mask,{loop:true})
-                .to({x:-23},1400)
-                .to({x:-233});
+                .to({x:-30},1400)
+                .to({x:-420});
 
             return  mybo;
         }
@@ -303,18 +303,18 @@ function allenbai(swi,times){
         function font(num){
             var fontC=new createjs.Container();
             stage.addChild(fontC);
-            var font1=new createjs.Text(num+"%","bold 44px Arial","#ffffff");
+            var font1=new createjs.Text(num+"%","bold 150px Arial","#ffffff");
             var bounds1=font1.getBounds();
-            font1.x=188-parseInt(bounds1.width/2);
-            font1.y=160;
-            font1.shadow=new createjs.Shadow("rgba(48, 40, 113, 0.71)",0,2,0);
+            font1.x=376-parseInt(bounds1.width/2);
+            font1.y=290;
+            font1.shadow=new createjs.Shadow("rgba(48, 40, 113, 0.71)",2,5,0);
             //console.log(font1)
             fontC.addChild(font1);
 
-            var font2=new createjs.Text("奖金比例","20px Arial","#ffffff")
+            var font2=new createjs.Text("奖金比例","40px Arial","#ffffff")
             var bounds2=font2.getBounds();
-            font2.x=188-parseInt(bounds2.width/2);
-            font2.y=220;
+            font2.x=376-parseInt(bounds2.width/2);
+            font2.y=460;
             fontC.addChild(font2);
             return font1;
         }
@@ -324,10 +324,10 @@ function allenbai(swi,times){
             var round=new createjs.Shape();
             round.graphics
                 .beginFill("rgba(255,255,255,.01)")
-                .drawCircle(0,0,105);
+                .drawCircle(0,0,210);
 
-            round.x=188;
-            round.y=188;
+            round.x=376;
+            round.y=376;
             round.addEventListener("click",function(){
                 //防止点击表盘中间部件，会触发旁边的设置按钮事件
             })
@@ -339,7 +339,7 @@ function allenbai(swi,times){
             var round=new createjs.Shape();
             round.graphics
                 .beginFill("rgba(26,26,26,1)")
-                .drawCircle(188,188,141);
+                .drawCircle(376,376,284);
             round.alpha=0;  
             stage.addChild(round);
             round.addEventListener("click",function(){
