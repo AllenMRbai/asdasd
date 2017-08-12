@@ -1,7 +1,8 @@
 //需要预加载的图片
 var imgsrc=[
     {id:"dial.png",src:"img/dial.png"},
-    {id:"round",src:"img/round.png"}
+    {id:"round",src:"img/round.png"},
+    {id:"red",src:"img/redpaper.png"}
 ];
 var preload=new createjs.LoadQueue(false);
 preload.loadManifest(imgsrc);
@@ -11,11 +12,11 @@ function allenbai(swi,times){
     //这两变量分别表示：masterSwitch是否开启推送开关，true表示开启；false表示关闭 timeSlot表示推送时间段，为一个对象，例：{0:true,1:true,2:true,3:true,4:true,5:true,6:true,7:true}
     var masterSwitch,timeSlot;
     if(swi===undefined){
-        masterSwitch=true;
+        masterSwitch=false;
     }else{
         masterSwitch=swi;
     }
-    timeSlot=times || {0:false,1:false,2:false,3:true,4:true,5:true,6:true,7:false};
+    timeSlot=times || {0:false,1:false,2:false,3:false,4:false,5:false,6:false,7:false};
 
     //图片加载完毕
     preload.on('complete',handfunc)
@@ -26,32 +27,36 @@ function allenbai(swi,times){
         var waveBo;//shape对象：波
         var fontRate;//shape对象:比例数字
         var shadeO;//shape对象：最外层控制canvas内的设置按钮是否可点击的遮罩层
+        var showFont,hideFont,showRed,hideRed;
         //搭设舞台
         var stage= new createjs.Stage("set_device");
         //绘制图形
         paint();
         //整合图层顺序，并画出图形
         function paint(){
-            layer_greenActive();//画最底层的绿色渐变圆，并创建各个时间段的扇形按钮
-            alpha_dial();//引入刻度、时间组成的的png图
-            waveBo=wave();//绘制中心圆球里的波浪，并用Tween将波浪动起来
-            fontRate=font(moneyRate[0]);//绘制圆球内的字体
+            //运行方法
+            var layerGreen=layer_greenActive();//画最底层的绿色渐变圆，并创建各个时间段的扇形按钮
+            var alphaDia=alpha_dial();//引入刻度、时间组成的的png图
+            var waveArray=wave();//绘制中心圆球里的波浪，并用Tween将波浪动起来
+            waveBo=waveArray[1];
+            var waveR=waveArray[0];//calculateBo,需要用的该对象，用来改变波的高度
+            var fonts=font(moneyRate[0]);//绘制圆球内的字体
+            fontRate=fonts.getChildByName("font1");//calculateBo,需要用的该对象，用来改变比率
+            var red=redpaper();
             calculateBo();//计算奖金比例和用户设置的时间段个数，并更新波的高度和奖金比例的数字
-            preventClickRound();//防止用户点击球中心部分时触发设置时间段事件
+            var preventClick=preventClickRound();//防止用户点击球中心部分时触发设置时间段事件
             shadeO=cantUse()//但推送关闭时，用户不可点击
+            
             pushBtbn();//设置推送开关和其他非canvas对象的状态，并给开关按钮绑定事件
+            
+            //添加到图层
+            stage.addChild(layerGreen,alphaDia,waveR,fonts,preventClick,shadeO,red);
 
-            createjs.Ticker.setFPS(30);
+            createjs.Ticker.timingMode = createjs.Ticker.RAF;
             createjs.Ticker.addEventListener("tick",function(){
                 stage.update();
             })
-            console.log("0100")
-            $(window).bind('beforeunload',function(){
-                postSet(masterSwitch,timeSlot);
-            });
-            /*window.onunload=function(){
-                alert("close page");
-            }*/
+
         }
 
         //推送开关按钮
@@ -61,15 +66,16 @@ function allenbai(swi,times){
             var pushBtn=$(".push_switch .push_btn");//开关按钮容器 position:relative
             var btnImg=$(".push_switch .btn_img");//开关按钮（按钮图片）position:absolute;top:-3px;关闭在左边left:0;开启在右边left:30px;
             var tipsLabl=$(".tips_lable");
-            if(masterSwitch){//这里暂时注释掉了，到时候记得改回来
+            /*if(masterSwitch){//这里暂时注释掉了，到时候记得改回来
                 tipsLabl.show();
             }else{
                 tipsLabl.hide();
-            }
+            }*/
 
             //渲染开和关的各种状态
             function renderState(){
                 //根据masterSwitch(主开关)的状态进行渲染
+                var numTimes=calculateRate()[1];
                 if(masterSwitch){//主开关开启，开启推送
                     //console.log("aaaaaaaaaaa")
                     btnImg.css({"left":"30px"});
@@ -77,12 +83,20 @@ function allenbai(swi,times){
                     status.text("已开启");
                     prompt.text("注：推送时间总时间越长，奖金比率越高");
                     shadeO.alpha=0;
+                    if(numTimes){
+                        showFont();
+                        hideRed(); 
+                    }
+                    tipsLabl.show();
                 }else{//主开关关闭，关闭推送
                     btnImg.css({"left":"0"});
                     pushBtn.removeClass("active");
                     status.text("已关闭");
                     prompt.text("注：开启推送开关，可获得折扣商品信息和奖励金！");
                     shadeO.alpha=.6;
+                    hideFont();
+                    showRed();
+                    tipsLabl.hide();
                 }
             }
             renderState();
@@ -133,27 +147,26 @@ function allenbai(swi,times){
         //图层1 绿色的active按钮  (注：图层index越小，越底部)
         function layer_greenActive(){
             var green_btn=new createjs.Container();
-            stage.addChild(green_btn);
             var circle=new createjs.Shape();
             circle.graphics.beginLinearGradientFill(["#4fffb7","#36caca"],[0,1],-60,-120,60,120);
             circle.graphics.drawCircle(0,0,282);
             circle.x=376;
             circle.y=376;
-            //circle.cache(0,0,141);
-            //console.log(circle);
-            //
+            green_btn.addChild(circle);
+
             //下面是扇形按钮
             var sectorBtns=[]
             var temp;
             var i=0;
             for(;i<8;i++){
                 temp=getHitArea(i)
-                stage.addChild(temp);
+                green_btn.addChild(temp);
                 sectorBtns.push(temp);
             }
 
-            green_btn.addChild(circle);
             
+            
+            return green_btn;
         }
 
         //仪表盘
@@ -166,44 +179,20 @@ function allenbai(swi,times){
             dialP.scaleX=scaleNX;
             dialP.scaleY=scaleNY;
             dialP.cache(0,0,bounds.width,bounds.height);
-            stage.addChild(dialP);
+            return dialP;
         }
 
-        /*
-        //波浪 版本1
-        function wave(){
-            var circle=new createjs.Shape();
-            var waveC=new createjs.Container;
-            stage.addChild(waveC);
-            circle.graphics
-                .beginFill("#000000")
-                .drawCircle(210,210,210)
-                .endFill();
-            circle.cache(-45,-45,586,586);
-            //waveC.addChild(circle)
-
-            var waveP=new createjs.Bitmap("img/bo.png");
-            var bounds=waveP.getBounds();
-            waveP.scaleX=.5;
-            waveP.scaleY=.5;
-            waveP.x=0;
-            waveP.y=120;
-            // console.log(bounds);
-            // //dialP.cache(0,0,bounds.width,bounds.height);
-            // waveP.filters=[
-            //  new createjs.AlphaMaskFilter(circle.cacheCanvas)
-            // ];
-
-            waveP.cache(0,0,750,750);
-            console.log(waveP)
-            waveC.addChild(waveP);
-        }
-        */
         //计算波的高度，并改变波的高度
         function calculateBo(){
             moneyRate=calculateRate();
             var numTimes=moneyRate[1];
-
+            if(numTimes){
+                showFont();
+                hideRed(); 
+            }else{
+                hideFont();
+                showRed(); 
+            }
             //修改波的高度
             var boY=580-parseInt(numTimes*480/8);
             waveBo.y=boY;
@@ -228,40 +217,13 @@ function allenbai(swi,times){
         //波浪 版本2
         function wave(){
             var boC=new createjs.Container();
-            stage.addChild(boC);
 
-            // //黑色的波为剪切蒙版
-            // var bo=new createjs.Bitmap("img/bo2.png");
-            // bo.scaleY=.5;
-            // bo.scaleX=.5;
-            // bo.x=0;
-            // bo.y=150;//奖金0%时，为284;奖金为100%时，为66 ----- {66 ~ 284}
-            // bo.cache(0,0,750,750);
-            
-            // var circle=new createjs.Shape();
-            // circle.graphics
-            //  .beginLinearGradientFill(["#f1940e","#ffde00"],[0,1],188,47,188,330)
-            //  .drawCircle(188,188,105);
-            // circle.filterss=[
-            //  new createjs.AlphaMaskFilter(mybo.cacheCanvas)
-            // ];
-            // circle.cache(0,0,375,375);
-            // stage.addChild(circle);
-            
-            
             //自己写波浪
             var mybo=new createjs.Shape();
             mybo.graphics
                 .clear()
                 .beginFill("rgba(0,0,0,.85)")
                 .moveTo(0,20)
-                // 偶数方案
-                // .quadraticCurveTo(53,0,106,20)
-                // .quadraticCurveTo(159,40,212,20)
-                // .quadraticCurveTo(265,0,318,20)
-                // .quadraticCurveTo(371,40,424,20)
-                // .quadraticCurveTo(477,0,630,20)
-                // 奇数方案
                 .quadraticCurveTo(56,-10,210,20)
                 .quadraticCurveTo(316,50,420,20)
                 .quadraticCurveTo(526,-10,630,20)
@@ -274,49 +236,47 @@ function allenbai(swi,times){
             mybo.x=-450;//{164...-450}
             mybo.y=400;//{ 564....84}%0到%100
             mybo.cache(0,0,1050,500)//y{-200~40} x{0~315}
-            //boC.addChild(mybo);
+
             var circle=new createjs.Bitmap("img/round.png");
             circle.x=165;
             circle.y=165;
-            // circle.filters=[
-            //  new createjs.AlphaMaskFilter(mybo.cacheCanvas)
-            // ];
-            //circle.cache(0,0,375,375);
             circle.mask=mybo;
-            //boC.addChild(mybo);
             boC.addChild(circle);
-
-            // var allen=new createjs.Shape();
-            // allen.graphics
-            //  .beginFill("red")
-            //  .drawCircle(188,188,100);
-            // stage.addChild(allen);
-            
-            //console.log(circle.mask);
             createjs.Tween.get(circle.mask,{loop:true})
                 .to({x:-30},1400)
                 .to({x:-420});
 
-            return  mybo;
+            return  [boC,mybo];
         }
 
         function font(num){
             var fontC=new createjs.Container();
-            stage.addChild(fontC);
-            var font1=new createjs.Text(num+"%","bold 150px Arial","#ffffff");
+            var font1=new createjs.Text(num+"%","bold 130px Arial","#ffffff");
+            font1.name="font1";
             var bounds1=font1.getBounds();
             font1.x=376-parseInt(bounds1.width/2);
-            font1.y=290;
+            font1.y=300;
             font1.shadow=new createjs.Shadow("rgba(48, 40, 113, 0.71)",2,5,0);
-            //console.log(font1)
             fontC.addChild(font1);
 
             var font2=new createjs.Text("奖金比例","40px Arial","#ffffff")
             var bounds2=font2.getBounds();
             font2.x=376-parseInt(bounds2.width/2);
             font2.y=460;
+
+            showFont=function(){
+                font1.visible=true;
+                font2.visible=true;
+            }
+
+            hideFont=function(){
+                font1.visible=false;
+                font2.visible=false;
+            }
+
             fontC.addChild(font2);
-            return font1;
+
+            return fontC;
         }
 
         //该圆是为了让点击表盘的点击面积减去该圆的面积
@@ -332,23 +292,60 @@ function allenbai(swi,times){
                 //防止点击表盘中间部件，会触发旁边的设置按钮事件
             })
 
-            stage.addChild(round);
+            return round;
         }
 
+        //推送开关关闭的时候，大的黑色遮罩层
         function cantUse(){
             var round=new createjs.Shape();
             round.graphics
                 .beginFill("rgba(26,26,26,1)")
                 .drawCircle(376,376,284);
             round.alpha=0;  
-            stage.addChild(round);
             round.addEventListener("click",function(){
                 //阻止用户点击
             })
             return round;
         }
+
+        //红包动画
         function redpaper(){
+            //红包动画
+            var spriteSheet=new createjs.SpriteSheet({
+                //framerate:2,
+                "images":[preload.getResult("red")],
+                "frames":{width:420,height:420,count:2,regX:0,regY:64,},
+                "animations":{
+                    "cry":[0,1,"cry",1.93]
+                }
+            });
+            var grant=new createjs.Sprite(spriteSheet,"cry");
+            grant.scaleX=.7;
+            grant.scaleY=.7;
+            var bounds=grant.getBounds();
+            grant.x=376-bounds.width/2*.7;
+            grant.y=376-bounds.height/2*.7;
+
+            var font3=new createjs.Text("你不要我了吗","40px Arial","#ffffff");
+            var bounds=font3.getBounds();
+            font3.x=376-parseInt(bounds.width/2);
+            font3.y=476;
+            //默认隐藏红包动画
+            grant.visible=false;
+            font3.visible=false;
+            showRed=function(){
+                grant.visible=true;
+                font3.visible=true;
+            }
+            hideRed=function(){
+                grant.visible=false;
+                font3.visible=false;
+            }
             
+            var container=new createjs.Container();
+            container.addChild(grant,font3);
+            
+            return container;
         }
 
     }//dial.onload
