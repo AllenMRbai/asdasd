@@ -12,11 +12,11 @@ function allenbai(swi,times){
     //这两变量分别表示：masterSwitch是否开启推送开关，true表示开启；false表示关闭 timeSlot表示推送时间段，为一个对象，例：{0:true,1:true,2:true,3:true,4:true,5:true,6:true,7:true}
     var masterSwitch,timeSlot;
     if(swi===undefined){
-        masterSwitch=false;
+        masterSwitch=true;
     }else{
         masterSwitch=swi;
     }
-    timeSlot=times || {0:false,1:false,2:false,3:false,4:false,5:false,6:false,7:false};
+    timeSlot=times || {0:false,1:false,2:false,3:true,4:true,5:true,6:true,7:false};
 
     //图片加载完毕
     preload.on('complete',handfunc)
@@ -66,11 +66,6 @@ function allenbai(swi,times){
             var pushBtn=$(".push_switch .push_btn");//开关按钮容器 position:relative
             var btnImg=$(".push_switch .btn_img");//开关按钮（按钮图片）position:absolute;top:-3px;关闭在左边left:0;开启在右边left:30px;
             var tipsLabl=$(".tips_lable");
-            /*if(masterSwitch){//这里暂时注释掉了，到时候记得改回来
-                tipsLabl.show();
-            }else{
-                tipsLabl.hide();
-            }*/
 
             //渲染开和关的各种状态
             function renderState(){
